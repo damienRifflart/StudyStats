@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react';
-
-// Définis un object qui n'existe pas encore
-interface Subject {
-  title: string,
-  periods: any,
-  hours: string
-}
+import { Subject } from '../../main/types';
+import SubjectElement from './components/SubjectElement';
 
 function App(): JSX.Element {
   // useState: état, permet de pas reset une variable à chaque fois que qq chose change | recalcule le component en fonction
@@ -15,7 +10,7 @@ function App(): JSX.Element {
 
   // Actualise à l'ouverture
   useEffect(() => {
-    window.electron.ipcRenderer.invoke('datarequest')
+    window.electron.ipcRenderer.invoke('dataRequest')
     .then((response) => {
       setData(response);
     })
@@ -25,10 +20,7 @@ function App(): JSX.Element {
     // fragments: grouper les élements entre eux sans faire une autre div
     <>
       {data.map((subject) => 
-        <>
-        <div>{subject.title}</div>
-        <div>{subject.periods}</div>
-        </>
+        <SubjectElement subject={subject}/>
       )}
     </>
   )

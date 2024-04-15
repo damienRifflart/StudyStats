@@ -51,7 +51,7 @@ app.whenReady().then(() => {
   })
 
   // IPC test
-  ipcMain.handle('datarequest', getData)
+  ipcMain.handle('dataRequest', getData)
 
   createWindow()
 
