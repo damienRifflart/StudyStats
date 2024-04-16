@@ -7,8 +7,8 @@ interface Props {
 export default function SubjectElement({ subject }: Props) {
   return (
     <div>
-      <p>
-        {subject.title}: {subject.class} cours dont {subject.time}
+      <p className="text-lg">
+        <strong>{subject.title}</strong>: {subject.class} cours dont {subject.time}
       </p>
     </div>
   );
