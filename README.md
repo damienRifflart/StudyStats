@@ -1,34 +1,69 @@
-# hoursleft
 
-An Electron application with React and TypeScript
+<h1 align="center">
+  <br>
+  <img src="" alt="StudyStatsIcon" width="200"></a>
+  <br>
+  StudyStats
+  <br>
+</h1>
 
-## Recommended IDE Setup
+<h4 align="center">Application that gets the number of hours and classes for the next 100 days.</h4>
 
-- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+<p align="center">
+  <a href="#key-features">Key Features</a> •
+  <a href="#download">Download</a>
+</p>
 
-## Project Setup
+## Key Features
 
-### Install
+* Easy to use
+* Fast
+* Cross platform
+  - Windows, macOS and Linux ready.
+ 
+## Download
+
+The version 1.0 is not available at the moment.
+
+## How To Use
+
+In order for the application to work, you must have a valid [Mon Bureau Numérique](https://www.monbureaunumerique.fr/) account, [git](https://git-scm.com/), and you have to get tokens with [scolengo token](https://github.com/maelgangloff/scolengo-token). From your command line:
 
 ```bash
+# Clone this repository
+$ git clone https://github.com/damienRifflart/StudyStats
+
+# Go into the repository
+$ cd StudyStats
+
+# Install dependencies
 $ npm install
-```
 
-### Development
+# Create config.js file src/main/ and write:
+config = (your json from scolengo token)
 
-```bash
+# Run the app
 $ npm run dev
 ```
 
-### Build
+> **Note**
+> If you are struggling to launch the application, please contact me at rifflartdamiencontact@gmail.com
 
-```bash
-# For windows
-$ npm run build:win
 
-# For macOS
-$ npm run build:mac
+## Credits
 
-# For Linux
-$ npm run build:linux
-```
+This software uses the following open source packages:
+
+- [Electron](http://electron.atom.io/) (U.I.)
+- [Scolengo API](https://github.com/maelgangloff/scolengo-api) (API)
+
+## You may also like...
+
+- [Shapy](https://github.com/damienRifflart/Shapy) - An iOs sport application.
+- [Marks](https://github.com/damienRifflart/Marks) - An application that automatically calculates your average in MBN. (will soon be a feature in StudyStats)
+
+## Contact
+
+> Gmail: [rifflartdamiencontact@gmail.com](rifflartdamiencontact@gmail.com) &nbsp;&middot;&nbsp;
+> GitHub: [@damienRifflart](https://github.com/damienRifflart) &nbsp;&middot;&nbsp;
+
