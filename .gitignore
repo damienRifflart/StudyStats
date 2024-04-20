@@ -5,3 +5,4 @@ out
 *.log*
 src/main/config.js
 src/main/config.json
+config.json

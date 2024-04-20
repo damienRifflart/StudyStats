@@ -1,6 +1,6 @@
 import { Skolengo } from 'scolengo-api';
 import moment from 'moment'; 
-import { Subject } from './types';
+import { Data } from './types';
 import fs from 'fs';
 import { TokenSetParameters } from 'openid-client'
 import config from './config.json'
@@ -20,12 +20,10 @@ function getTime(subject: string, text: string): string {
   const lines = text.split("\n");
   let diffs: number[] = [];
   let buffer: string[] = [];
-  const regex = new RegExp(`\\b${subject}\\b`);
 
   for (let i = 0; i < lines.length; i++) {
     buffer.push(lines[i]);
-
-    if (regex.test(lines[i])) {
+    if (lines[i].includes(subject)) {
       if (buffer.length >= 3) {
         let time1 = buffer[buffer.length - 3].slice(8);
         let time2 = buffer[buffer.length - 2].slice(6);
@@ -42,18 +40,18 @@ function getTime(subject: string, text: string): string {
     }
   }
   let mins = diffs.reduce((acc, curr) => acc + curr, 0);
-  let hours = `${Math.floor(mins / 60)} heures ${mins % 60} minutes`;
-  return hours;
+  let timeText = `${Math.floor(mins / 60)} heures ${mins % 60} minutes`;
+  return timeText;
 }
 
 // get a list of the subjects
 function parseSubjects(text: string): Set<string> {
   const subjects = new Set<string>();
-  const lignes = text.split('\n');
+  const lines = text.split('\n');
 
-  for (const ligne of lignes) {
-    if (ligne.startsWith('DESCRIPTION:')) {
-      const subject = ligne.split('DESCRIPTION:')[1].split(' avec')[0];
+  for (const line of lines) {
+    if (line.startsWith('DESCRIPTION:')) {
+      const subject = line.split('DESCRIPTION:')[1].split(' avec')[0];
       // enleve sesa-maths
       if (!subject.includes('SESA-')) {
         subjects.add(subject); 
@@ -64,8 +62,24 @@ function parseSubjects(text: string): Set<string> {
   return subjects
 }
 
+// get the time in total
+function getTotalTime(subjects: Set<string>, agendaText: string): string {
+  let sumTime: number = 0;
+
+  for (const subject of subjects) {
+    const timeText = getTime(subject, agendaText).split(' ');
+    const hours = parseInt(timeText[0]);
+    const mins = parseInt(timeText[2]);
+    const timeNumber = hours*60 + mins
+    sumTime += timeNumber
+  }
+
+  let timeText = `${Math.floor(sumTime / 60)} heures ${sumTime % 60} minutes`;
+  return timeText;
+}
+
 // get subjects titles, classes, and times left
-async function getData(): Promise<Subject[]> {
+async function getData(): Promise<Data[]> {
   // get agenda for the next 100 days
   const user = await Skolengo.fromConfigObject(config, {onTokenRefresh});
   const startDate = new Date().toISOString().split('T')[0];
@@ -76,13 +90,14 @@ async function getData(): Promise<Subject[]> {
   const agendaText = agenda.toICalendar();
   const subjects = parseSubjects(agendaText)
 
-  const data:Subject[] = [];
+  const data:Data[] = [];
 
   for (const subject of subjects) {
     data.push({
       title: subject,
-      class: countClass(`SUMMARY:${subject}`, agendaText),
+      class: countClass(`DESCRIPTION:${subject}`, agendaText),
       time: getTime(subject, agendaText),
+      totalTime: getTotalTime(subjects, agendaText)
     });
   }
 

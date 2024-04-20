@@ -1,7 +1,7 @@
 
 <h1 align="center">
   <br>
-  <img src="" alt="StudyStatsIcon" width="200"></a>
+  <img src="./resources/icon.png" alt="StudyStatsIcon" width="200"></a>
   <br>
   StudyStats
   <br>
