@@ -63,7 +63,7 @@ function parseSubjects(text: string): Set<string> {
 }
 
 // get the time in total
-function getTotalTime(subjects: Set<string>, agendaText: string): string {
+async function getTotalTime(subjects: Set<string>, agendaText: string): Promise<string> {
   let sumTime: number = 0;
 
   for (const subject of subjects) {
@@ -78,8 +78,19 @@ function getTotalTime(subjects: Set<string>, agendaText: string): string {
   return timeText;
 }
 
+// convert the number of hours from getTotalTime() in days
+function convertInDays(time: string): number {
+  const text = time.split(' ');
+  const hours = parseInt(text[0]);
+  const mins = parseInt(text[2]);
+  const totalDays = Math.floor((hours * 60 + mins) / 1440);
+
+  return totalDays;
+}
+
+
 // get subjects titles, classes, and times left
-async function getData(): Promise<Data[]> {
+async function getData(): Promise<{ data: Data[]; totalHours: string; totalDays: number }> {
   // get agenda for the next 100 days
   const user = await Skolengo.fromConfigObject(config, {onTokenRefresh});
   const startDate = new Date().toISOString().split('T')[0];
@@ -88,20 +99,22 @@ async function getData(): Promise<Data[]> {
   const infoUser = await user.getUserInfo();
   const agenda = await user.getAgenda(infoUser.id, startDate, endDate, 100);
   const agendaText = agenda.toICalendar();
-  const subjects = parseSubjects(agendaText)
+  const subjects = parseSubjects(agendaText);
+  const totalHours = await getTotalTime(subjects, agendaText);
+  const totalDays = convertInDays(totalHours);
 
-  const data:Data[] = [];
+  const data: Data[] = [];
 
   for (const subject of subjects) {
     data.push({
       title: subject,
       class: countClass(`DESCRIPTION:${subject}`, agendaText),
-      time: getTime(subject, agendaText),
-      totalTime: getTotalTime(subjects, agendaText)
+      time: getTime(subject, agendaText)
     });
   }
 
-  return data;
+  return { data, totalHours, totalDays };
 }
 
-export default getData;
+
+export { getData }

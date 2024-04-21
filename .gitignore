@@ -3,6 +3,5 @@ dist
 out
 .DS_Store
 *.log*
-src/main/config.js
 src/main/config.json
 config.json
