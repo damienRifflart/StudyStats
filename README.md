@@ -10,8 +10,7 @@
 <h4 align="center">Application that gets the number of hours and classes for the next 100 days.</h4>
 
 <p align="center">
-  <a href="#key-features">Key Features</a> •
-  <a href="#download">Download</a>
+  <a href="#key-features">Key Features</a>
 </p>
 
 ## Key Features
@@ -20,10 +19,6 @@
 * Fast
 * Cross platform
   - Windows, macOS and Linux ready.
- 
-## Download
-
-The version 1.0 is not available at the moment.
 
 ## How To Use
 
